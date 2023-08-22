@@ -27,17 +27,14 @@ class SearchTree {
 
     public:
 
-        SearchTree(const T &val) {
-            this->value = val;
-            this->left = nullptr;
-            this->right = nullptr;
-        }
+        SearchTree() : value(T()), left(nullptr), right(nullptr) {}
+
+        SearchTree(const T &val) : value(val), left(nullptr), right(nullptr) {}
 
         ~SearchTree() {
             delete this->left;
             delete this->right;
         }
-
 
         T root() {
            return this->value; 
@@ -47,12 +44,13 @@ class SearchTree {
 
             //This SearchTree has no repetition of values,
             // if the value is already in the tree, it just do nothing and returns false
-            if(val == this->value) return false;
+            if(this->value == T()) this->value = val;
+
+            else if(val == this->value) return false;
 
             else if(val < this->value) {
                 if(this->left == nullptr) {
                     this->left = new SearchTree<T>(val);
-                    return true;
                 }
                 else return left->insert(val);
             }
@@ -60,10 +58,11 @@ class SearchTree {
             else {
                 if(this->right == nullptr) { 
                     this->right = new SearchTree<T>(val);
-                    return true;
                 }
                 else return right->insert(val);
             }
+
+            return true;
 
         }
 
@@ -90,12 +89,14 @@ class SearchTree {
             return full;
         }
 
-    
-    private:
+        bool isEmpty() {
+            return this->left == nullptr && this->right == nullptr && this->value == T();
+        }
 
         bool isLeaf() {
-            return this->left == nullptr && this->right == nullptr;
+            return this->left == nullptr && this->right == nullptr && this->value != T();
         }
+
 
 
 
